@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Landing Page</title>
+    <style>
+        body {
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #fff; /* Fundo branco */
+            height: 100vh;
+            overflow: hidden;
+            position: relative;
+        }
+        #video-logo {
+            width: 100%;
+            max-width: 600px;
+            background-color: #fff; /* Fundo branco */
+            position: relative;
+            top: -5cm; /* Move o vídeo 5 cm para cima */
+        }
+        #pag { 
+            display: none;    
+            width: 100%; /* Ajusta a largura para preencher a tela */
+            height: auto; /* Mantém a proporção da imagem */
+            max-width: 480px; /* Largura máxima para simular a tela de celular */
+            position: absolute; /* Alinha a imagem no centro */
+            top: 50%; /* Centraliza verticalmente */
+            left: 50%; /* Centraliza horizontalmente */
+            transform: translate(-50%, -50%); /* Corrige a posição central da imagem */
+            z-index: 1; /* Garante que a imagem da página fique acima do fundo */
+        }
+        /* Estilo para o fundo de papel */
+        #background {
+            display: none; /* Inicialmente escondido */
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('papel.png'); /* Define a imagem de fundo */
+            background-size: cover; /* A imagem vai cobrir toda a tela */
+            background-position: center; /* Centraliza a imagem */
+            z-index: 0; /* Fica atrás do conteúdo principal */
+        }
+        /* Estilo do botão do WhatsApp */
+        .whatsapp-btn {
+            display: none; /* O botão começa invisível */
+            position: absolute;
+            top: 76%; /* Ajuste da posição */
+            left: 50%; /* Centraliza o botão horizontalmente */
+            transform: translateX(-50%);
+            background-color: #25D366;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            border: none;
+            border-radius: 8px;
+            padding: 12px 24px; 
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            z-index: 2; /* Garante que o botão fique acima de outros elementos */
+            transition: transform 0.3s ease; /* Adiciona uma transição suave ao efeito de zoom */
+        }
+
+        .whatsapp-btn:hover { 
+            background-color: #1EBE59; 
+            transform: translateX(-50%) scale(1.1); /* Efeito de zoom no botão do WhatsApp */
+        }
+
+        /* Estilo dos botões Caucaia I e Caucaia 2 */
+        .caucaia-btn {
+            display: none; /* O botão começa invisível */
+            position: absolute;
+            left: 50%; /* Centraliza os botões horizontalmente */
+            transform: translateX(-50%);
+            background-color: #007BFF; /* Cor do botão */
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            border: none;
+            border-radius: 8px;
+            padding: 12px 24px; 
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            z-index: 2; /* Garante que os botões fiquem acima de outros elementos */
+            margin-top: 10px; /* Espaço entre os botões */
+            transition: transform 0.3s ease; /* Adiciona uma transição suave ao efeito de zoom */
+        }
+
+        /* Efeito de zoom nos botões no hover */
+        .caucaia-btn:hover {
+            background-color: #0056b3; 
+            transform: translateX(-50%) scale(1.1); /* Aumenta o botão 10% ao passar o mouse */
+        }
+
+        /* Ajuste para o vídeo de Loteamento com largura de 400px e altura de 350px */
+        #loteamento-video {
+            display: none; /* Inicialmente escondido */
+            width: 400px; /* Largura fixa de 400px */
+            height: 220px; /* Altura fixa de 350px */
+            object-fit: cover; /* Ajusta o conteúdo do vídeo para cobrir a área sem distorcer */
+            background-color: #fff;
+            position: absolute;
+            top: 60%; /* Centraliza o vídeo verticalmente */
+            left: 50%; /* Centraliza o vídeo horizontalmente */
+            transform: translate(-50%, -50%);
+            z-index: 1;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Fundo da página (papel.png) -->
+    <div id="background"></div>
+
+    <!-- Vídeo do logo -->
+    <video id="video-logo" autoplay muted >
+        <source src="logoA.mp4" type="video/mp4">
+        Seu navegador não suporta o formato de vídeo.
+    </video>
+
+    <!-- Imagem da página principal, agora centralizada -->
+    <img id="pag" src="pag.png" alt="Página Inicial">
+
+    <!-- Vídeo do Loteamento (Inicialmente escondido) -->
+    <video id="loteamento-video" autoplay muted>
+        <source src="Loteamento.mp4" type="video/mp4">
+        Seu navegador não suporta a tag de vídeo.  
+    </video>
+
+    <!-- Botão do WhatsApp -->
+    <button class="whatsapp-btn" onclick="goToWhatsApp()">
+        Entre em Contato pelo WhatsApp
+    </button>
+
+    <!-- Botões Caucaia I e Caucaia 2 -->
+    <button style="position: relative; left: 50px; top: 260px;" class="caucaia-btn" onclick="goToCaucaiaI()">Caucaia I</button>
+    <button style="position: relative;top: 260px; left: 70px;" class="caucaia-btn" onclick="goToCaucaia2()">Caucaia II</button>
+
+    <script>
+        // Função para exibir os botões e iniciar o vídeo do loteamento após o término do vídeo do logo
+        const videoLogo = document.getElementById("video-logo");
+        const loteamentoVideo = document.getElementById("loteamento-video");
+        const pagImage = document.getElementById("pag");
+
+        videoLogo.onended = function() {
+            // Quando o vídeo do logo acabar
+            videoLogo.style.display = "none"; // Esconde o vídeo do logo
+            pagImage.style.display = "block"; // Exibe a imagem principal
+            loteamentoVideo.style.display = "block"; // Exibe o vídeo do loteamento
+            document.getElementById("background").style.display = "block"; // Exibe o fundo
+            document.querySelector(".whatsapp-btn").style.display = "block"; // Exibe o botão do WhatsApp
+            document.querySelectorAll(".caucaia-btn").forEach(button => button.style.display = "block"); // Exibe os botões Caucaia
+        };
+
+        // Função para redirecionar para o WhatsApp
+        function goToWhatsApp() {
+            const phoneNumber = "5511948029430"; // Número do WhatsApp
+            const url = `https://wa.me/${phoneNumber}`; // Link para abrir o WhatsApp
+            window.open(url, "_blank"); // Abre o link em uma nova aba
+        }
+
+        // Função para redirecionar para Caucaia I
+        function goToCaucaiaI() {
+            // Substitua o link abaixo pelo destino correto para Caucaia I
+            window.open("https://www.exemplo.com/caucaia-i", "_blank");
+        }
+
+        // Função para redirecionar para Caucaia 2
+        function goToCaucaia2() {
+            // Substitua o link abaixo pelo destino correto para Caucaia 2
+            window.open("https://www.exemplo.com/caucaia-2", "_blank");
+        }
+    </script>
+
+</body>
+</html>
